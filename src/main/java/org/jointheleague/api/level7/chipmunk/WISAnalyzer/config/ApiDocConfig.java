@@ -1,4 +1,4 @@
-package org.jointheleague.api.chipmunk.WISAnalyzer.config;
+package org.jointheleague.api.level7.chipmunk.WISAnalyzer.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
