@@ -6,9 +6,16 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.jointheleague.api.level7.chipmunk.WISAnalyzer.service.ACSService;
 
 @RestController
 public class ACSController {
+
+    private final ACSService acsService;
+
+    public ACSController(ACSService locService) {
+        this.acsService = locService;
+    }
 
     @GetMapping("/searchACSResults")
     @ApiOperation(value = "Searches for women in the situation of the search term",
@@ -19,7 +26,7 @@ public class ACSController {
             @ApiResponse(code = 404, message = "Result(s) not found")
     })
     public String getResults(@RequestParam(value="q") String query){
-        return "Searching for women" + query;
+        return acsService.getResults(query);
     }
 
 }
