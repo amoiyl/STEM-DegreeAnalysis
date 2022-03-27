@@ -11,7 +11,7 @@ public class ACSService {
         this.acsRepository = acsRepository;
     }
 
-    public String getResults(String query){
-        return acsRepository.getResults(query);
+    public String[][] getResults(String query){
+        return acsRepository.getResults();
     }
 }
