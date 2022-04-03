@@ -3,9 +3,13 @@ package org.jointheleague.api.level7.chipmunk.WISAnalyzer.repository;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Repository
 public class ACSRepository {
-    private String baseURL = "http://api.census.gov/data/2019/acs/acs1?get=NAME,C15010C_003E,B15011_024E,B15011_005E&for=state:*";
+    private String baseURL = "https://api.census.gov/data/2019/acs/acs1?get=NAME,B15011_024E,B15011_005E&for=state:*";
     private final WebClient webClient;
 
     public ACSRepository() {
@@ -21,7 +25,14 @@ public class ACSRepository {
                 .retrieve()
                 .bodyToMono(String[][].class)
                 .block();
-        System.err.println(block);
-        return block;
+
+        List<List<String>> list = Arrays.stream(block)
+                .map(Arrays::asList)
+                .collect(Collectors.toList());
+        list.remove(0);
+        String[][] dataset = list.stream()
+                .map(s -> s.stream().toArray(String[]::new))
+                .toArray(String[][]::new);
+        return dataset;
     }
 }

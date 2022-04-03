@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.jointheleague.api.level7.chipmunk.WISAnalyzer.service.ACSService;
 
+import java.util.Arrays;
+
 @RestController
 public class ACSController {
 
@@ -18,15 +20,17 @@ public class ACSController {
     }
 
     @GetMapping("/searchACSResults")
-    @ApiOperation(value = "Bachelor's degrees based on gender",
+    @ApiOperation(value = "Bachelor's degrees based on demographics",
             notes = "Response may include multiple Result values.",
             response = String[][].class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Result(s) found"),
             @ApiResponse(code = 404, message = "Result(s) not found")
     })
-    public String[][] getResults(@RequestParam(value="q") String query){
-        return acsService.getResults(query);
+    public String[] getResults(@RequestParam(value="state") String query){
+        String[] stateData = acsService.getResults(query);
+        String[] slicedStateData = Arrays.copyOfRange(stateData, 0, 3);
+        return slicedStateData;
     }
 
 }
