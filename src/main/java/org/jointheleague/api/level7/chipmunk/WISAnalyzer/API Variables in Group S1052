@@ -1,10 +1,7 @@
-C15010C_003E: total science and engineering bachelor's degrees
-    attributes: C15010_003E
-
-B15011_024E: age 25-39 females in science and engineering
+B15011_024E: age 25-39 males in science and engineering
     attributes: B15011_024E
 
-B15011_005E: age 25-39 males in science and engineering
+B15011_005E: age 25-39 females in science and engineering
     attributes: B15011_005E
 
 E = estimate, M = margin of error
