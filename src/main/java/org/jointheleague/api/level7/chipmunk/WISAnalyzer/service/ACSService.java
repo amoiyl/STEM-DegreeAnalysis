@@ -1,6 +1,7 @@
 package org.jointheleague.api.level7.chipmunk.WISAnalyzer.service;
 
 import org.jointheleague.api.level7.chipmunk.WISAnalyzer.repository.ACSRepository;
+import org.jointheleague.api.level7.chipmunk.WISAnalyzer.repository.Result;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -14,9 +15,7 @@ public class ACSService {
         this.acsRepository = acsRepository;
     }
 
-    public String[] getResults(String query) {
-        String[][] filteredData = acsRepository.getResults();
-        String[] requestedData = Arrays.stream(filteredData).filter(datum->datum[0].equals(query)).collect(Collectors.toList()).get(0);
-        return requestedData;
+    public String getResults(String query) {
+        return acsRepository.getResults(query).toString();
     }
 }

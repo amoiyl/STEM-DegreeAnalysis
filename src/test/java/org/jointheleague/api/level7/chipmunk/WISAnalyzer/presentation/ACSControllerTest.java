@@ -1,11 +1,14 @@
 package org.jointheleague.api.level7.chipmunk.WISAnalyzer.presentation;
 
+import org.jointheleague.api.level7.chipmunk.WISAnalyzer.repository.Result;
 import org.jointheleague.api.level7.chipmunk.WISAnalyzer.service.ACSService;
+import org.jointheleague.api.level7.chipmunk.WISAnalyzer.presentation.ACSController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,19 +28,22 @@ class ACSControllerTest {
     }
 
     @Test
-    void getResults() {
-        // given
+    void givenGoodQuery_whenGetResults_thenReturnListOfResults() {
+        //given
         String query = "CA";
-        String[] expectedResults = {"0", "0", "0"};
+        Result result = new Result("", "", "");
+        result.setState("California");
+        result.setDegreeEarnedByWomen("10");
+        result.setDegreeEarnedByMen("100");
 
-        when(acsService.getResults(query))
-                .thenReturn(expectedResults);
+        String expectedResults = "In California, there are 100 STEM degrees earned by men and 10 STEM degrees earned by women.";
 
-        // when
-        String[] actualResults = acsController.getResults(query);
+        when(acsService.getResults(query)).thenReturn(expectedResults);
 
-        // then
-        System.err.println((actualResults));
+        //when
+        String actualResults = acsController.getResults(query);
+
+        //then
         assertEquals(expectedResults, actualResults);
     }
 }
