@@ -1,15 +1,13 @@
 package org.jointheleague.api.level7.chipmunk.WISAnalyzer.presentation;
 
-import org.jointheleague.api.level7.chipmunk.WISAnalyzer.repository.Result;
+import org.jointheleague.api.level7.chipmunk.WISAnalyzer.repository.dto.Result;
 import org.jointheleague.api.level7.chipmunk.WISAnalyzer.service.ACSService;
-import org.jointheleague.api.level7.chipmunk.WISAnalyzer.presentation.ACSController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.Collections;
-import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -45,5 +43,18 @@ class ACSControllerTest {
 
         //then
         assertEquals(expectedResults, actualResults);
+    }
+
+    @Test
+    void givenBadQuery_whenGetResults_thenThrowsException() {
+        //given
+        String query = "not a state";
+
+        //when
+        when(acsController.getResults(query)).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Result(s) not found."));
+
+        //then
+        Throwable exceptionThrown = assertThrows(ResponseStatusException.class, () -> acsController.getResults(query));
+        assertEquals(exceptionThrown.getMessage(), "404 NOT_FOUND \"Result(s) not found.\"");
     }
 }

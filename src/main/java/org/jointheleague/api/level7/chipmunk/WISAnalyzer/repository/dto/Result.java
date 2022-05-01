@@ -1,4 +1,4 @@
-package org.jointheleague.api.level7.chipmunk.WISAnalyzer.repository;
+package org.jointheleague.api.level7.chipmunk.WISAnalyzer.repository.dto;
 
 public class Result {
     private String state;
