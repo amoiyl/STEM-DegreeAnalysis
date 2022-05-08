@@ -19,7 +19,7 @@ public class ApiDocConfig {
     private ApiInfo apiInfo() {
         return new ApiInfo(
                 "Level 7 Wi-Stem Analyzer",
-                "League of Amazing Programmers Level 7 Wi-Stem Analyzer",
+                "League of Amazing Programmers LeveACSControllerl 7 Wi-Stem Analyzer",
                 "1.0.0",
                 null,
                 new Contact("Amy Zhao", "www.jointheleague.org", "ylamyzhao@gmail.com"),

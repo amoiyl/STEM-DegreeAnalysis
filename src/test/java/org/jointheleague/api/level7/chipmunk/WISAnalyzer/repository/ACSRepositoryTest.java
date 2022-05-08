@@ -38,6 +38,9 @@ class ACSRepositoryTest {
     @Mock
     Mono<ACSResponse> acsResponseMonoMock;
 
+    @Mock
+    Mono<String[][]> responseMonoMock;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -48,10 +51,10 @@ class ACSRepositoryTest {
     @Test
     void whenGetResults_thenReturnACSResponse() {
             //given
-            String query = "CA";
-            ACSResponse acsResponse = new ACSResponse();
-            String[][] expectedResults = {{"CA", "1", "10"}};
-            acsResponse.setResults(expectedResults);
+            String query = "WA";
+            Result expectedResult = new Result("WA","10","10");
+            String expectedResults = expectedResult.toString();
+            String[][] dataset = {{"CA", "10", "10"}, {"WA", "10", "10"}, {"OR", "10", "10"}};
 
             when(webClientMock.get())
                     .thenReturn(requestHeadersUriSpecMock);
@@ -59,13 +62,13 @@ class ACSRepositoryTest {
                     .thenReturn(requestHeadersSpecMock);
             when(requestHeadersSpecMock.retrieve())
                     .thenReturn(responseSpecMock);
-            when(responseSpecMock.bodyToMono(ACSResponse.class)) // something here is wrong
-                    .thenReturn(acsResponseMonoMock);
-            when(acsResponseMonoMock.block())
-                    .thenReturn(acsResponse);
+            when(responseSpecMock.bodyToMono(String[][].class)) // something here is wrong
+                    .thenReturn(responseMonoMock);
+            when(responseMonoMock.block())
+                    .thenReturn(dataset);
 
             //when
-            Result actualACSResults = acsRepository.getResults(query);
+            String actualACSResults = acsRepository.getResults(query).toString();
 
             //then
             assertEquals(expectedResults, actualACSResults);

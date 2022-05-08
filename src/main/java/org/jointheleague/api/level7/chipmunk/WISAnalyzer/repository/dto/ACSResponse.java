@@ -12,15 +12,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 public class ACSResponse {
 
-    private String[][] results = null;
+    private Result results;
 
     @JsonProperty("results")
-    public String[][] getResults() {
+    public Result getResults() {
         return results;
     }
 
     @JsonProperty("results")
-    public void setResults(String[][] results) {
+    public void setResults(Result results) {
         this.results = results;
     }
 

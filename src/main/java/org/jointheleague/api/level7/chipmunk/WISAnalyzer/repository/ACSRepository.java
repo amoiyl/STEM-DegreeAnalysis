@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.jointheleague.api.level7.chipmunk.WISAnalyzer.repository.dto.Result;
 import org.springframework.web.server.ResponseStatusException;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,6 +42,8 @@ public class ACSRepository {
         String[][] dataset = list.stream()
                 .map(s -> s.stream().toArray(String[]::new))
                 .toArray(String[][]::new);
+
+        // System.out.println(Arrays.deepToString(dataset));
 
         try {
             Arrays.stream(dataset).filter(datum -> datum[0].equals(query)).collect(Collectors.toList()).get(0);
