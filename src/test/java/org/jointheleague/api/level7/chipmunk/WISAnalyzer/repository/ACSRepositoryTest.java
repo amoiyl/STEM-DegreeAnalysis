@@ -62,7 +62,7 @@ class ACSRepositoryTest {
                     .thenReturn(requestHeadersSpecMock);
             when(requestHeadersSpecMock.retrieve())
                     .thenReturn(responseSpecMock);
-            when(responseSpecMock.bodyToMono(String[][].class)) // something here is wrong
+            when(responseSpecMock.bodyToMono(String[][].class))
                     .thenReturn(responseMonoMock);
             when(responseMonoMock.block())
                     .thenReturn(dataset);
