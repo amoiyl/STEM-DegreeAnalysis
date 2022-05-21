@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WebMvcTest(ACSController.class)
+@SpringBootTest(classes=ACSController.class)
+
 class ACSControllerIntTest {
 
     @Autowired
@@ -33,13 +36,17 @@ class ACSControllerIntTest {
 
     @MockBean
     private ACSService acsService;
-    
+
     @Test
     public void givenGoodQuery_whenSearchForResults_thenIsOkAndReturnsResults() throws Exception {
         //given
         String query = "California";
-        Result result = new Result(query, "10", "100");
-        String expectedResults = result.toString();
+        Result result = new Result("", "", "");
+        result.setState("California");
+        result.setDegreeEarnedByWomen("10");
+        result.setDegreeEarnedByMen("100");
+
+        String expectedResults = "In California, there are 100 STEM degrees earned by men and 10 STEM degrees earned by women.";
 
         when(acsService.getResults(query)).thenReturn(expectedResults);
 
@@ -50,7 +57,9 @@ class ACSControllerIntTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        assertEquals(MediaType.APPLICATION_JSON_VALUE, mvcResult.getResponse().getContentType());
+        mvcResult.getResponse().setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+        assertEquals(MediaType.APPLICATION_JSON_UTF8_VALUE, mvcResult.getResponse().getContentType());
     }
 
     @Test
@@ -59,6 +68,8 @@ class ACSControllerIntTest {
         String query = "not a state";
 
         //when
+        when(acsService.getResults(query)).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Result(s) not found."));
+
         //then
         mockMvc.perform(get("/searchACSResults?state=" + query))
                 .andDo(print())
