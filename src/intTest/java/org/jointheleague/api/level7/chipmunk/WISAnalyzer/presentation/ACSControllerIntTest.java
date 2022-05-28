@@ -27,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WebMvcTest(ACSController.class)
-@SpringBootTest(classes=ACSController.class)
 
 class ACSControllerIntTest {
 
