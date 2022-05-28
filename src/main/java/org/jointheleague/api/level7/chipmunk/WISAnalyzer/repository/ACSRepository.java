@@ -28,11 +28,15 @@ public class ACSRepository {
     }
 
     public Result getResults(String query){
+        System.err.println("blob");
+
         String[][] block = webClient.get()
                 .uri(uriBuilder -> uriBuilder.build())
                 .retrieve()
                 .bodyToMono(String[][].class)
                 .block();
+
+        System.err.println("blob fails");
 
         // remove first element
         List<List<String>> list = Arrays.stream(block)
@@ -43,7 +47,7 @@ public class ACSRepository {
                 .map(s -> s.stream().toArray(String[]::new))
                 .toArray(String[][]::new);
 
-        // System.out.println(Arrays.deepToString(dataset));
+//        System.err.println(Arrays.deepToString(dataset));
 
         try {
             Arrays.stream(dataset).filter(datum -> datum[0].equals(query)).collect(Collectors.toList()).get(0);
