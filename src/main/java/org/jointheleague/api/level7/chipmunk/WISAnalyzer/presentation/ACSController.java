@@ -4,12 +4,14 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.jointheleague.api.level7.chipmunk.WISAnalyzer.repository.dto.Result;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.jointheleague.api.level7.chipmunk.WISAnalyzer.service.ACSService;
 
 @RestController
+@CrossOrigin
 public class ACSController {
 
     private final ACSService acsService;
