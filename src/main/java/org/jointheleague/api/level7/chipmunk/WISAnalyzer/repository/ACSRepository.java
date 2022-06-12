@@ -28,18 +28,28 @@ public class ACSRepository {
     }
 
     public Result getResults(String query){
-        System.err.println("blob");
-
-        String[][] block = webClient.get()
+        String blockString = webClient.get()
                 .uri(uriBuilder -> uriBuilder.build())
                 .retrieve()
-                .bodyToMono(String[][].class)
+                .bodyToMono(String.class)
                 .block();
 
-        System.err.println("blob fails");
+        String[] blockArr1 = blockString.replace("[", "").split("],");
+//        System.err.println(Arrays.deepToString(blockArr1));
+        String[][] blockArr2 = new String[blockArr1.length][4];
+
+        for(int state = 0; state < blockArr1.length; state++) {
+            String[] transitionArr = blockArr1[state].split(",");
+            for(int value = 0; value < 4; value++) {
+                blockArr2[state][value] = transitionArr[value];
+            }
+        }
+
+        //System.err.println(blockArr2.getClass().equals(String[][].class));
+//        System.err.println(Arrays.deepToString(blockArr2));
 
         // remove first element
-        List<List<String>> list = Arrays.stream(block)
+        List<List<String>> list = Arrays.stream(blockArr2)
                 .map(Arrays::asList)
                 .collect(Collectors.toList());
         list.remove(0);
@@ -47,17 +57,21 @@ public class ACSRepository {
                 .map(s -> s.stream().toArray(String[]::new))
                 .toArray(String[][]::new);
 
-//        System.err.println(Arrays.deepToString(dataset));
-
+        String[] requestedData;
         try {
-            Arrays.stream(dataset).filter(datum -> datum[0].equals(query)).collect(Collectors.toList()).get(0);
+            requestedData = Arrays.stream(dataset).filter(datum -> datum[0].contains(query)).collect(Collectors.toList()).get(0);
         } catch(Exception e) {
+            System.err.println("ERROR");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Result(s) not found.");
         }
 
-        // get state data
-        String[] requestedData = Arrays.stream(dataset).filter(datum -> datum[0].equals(query)).collect(Collectors.toList()).get(0);
-        // split into Result
+//        System.err.println(Arrays.deepToString(requestedData));
+
+       // split into Result
+
+//        Result result = new Result(requestedData[0], requestedData[1], requestedData[2]);
+//        System.err.println(requestedData[0] + "NOBO");
+
         return new Result(requestedData[0], requestedData[1], requestedData[2]);
     }
 }
