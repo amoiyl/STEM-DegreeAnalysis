@@ -61,10 +61,9 @@ public class ACSRepository {
         try {
             requestedData = Arrays.stream(dataset).filter(datum -> datum[0].contains(query)).collect(Collectors.toList()).get(0);
         } catch(Exception e) {
-            System.err.println("ERROR");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Result(s) not found.");
         }
-
+        System.err.println(requestedData[0]);
 //        System.err.println(Arrays.deepToString(requestedData));
 
        // split into Result
