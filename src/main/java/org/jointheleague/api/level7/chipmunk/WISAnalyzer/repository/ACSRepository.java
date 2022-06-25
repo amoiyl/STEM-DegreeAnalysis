@@ -7,6 +7,7 @@ import org.jointheleague.api.level7.chipmunk.WISAnalyzer.repository.dto.Result;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class ACSRepository {
         this.webClient = webClientMock;
     }
 
-    public Result getResults(String query){
+    public List<Result> getResults(String query){
         String blockString = webClient.get()
                 .uri(uriBuilder -> uriBuilder.build())
                 .retrieve()
@@ -35,7 +36,6 @@ public class ACSRepository {
                 .block();
 
         String[] blockArr1 = blockString.replace("[", "").split("],");
-//        System.err.println(Arrays.deepToString(blockArr1));
         String[][] blockArr2 = new String[blockArr1.length][4];
 
         for(int state = 0; state < blockArr1.length; state++) {
@@ -44,9 +44,6 @@ public class ACSRepository {
                 blockArr2[state][value] = transitionArr[value];
             }
         }
-
-        //System.err.println(blockArr2.getClass().equals(String[][].class));
-//        System.err.println(Arrays.deepToString(blockArr2));
 
         // remove first element
         List<List<String>> list = Arrays.stream(blockArr2)
@@ -63,14 +60,13 @@ public class ACSRepository {
         } catch(Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Result(s) not found.");
         }
-        System.err.println(requestedData[0]);
+
 //        System.err.println(Arrays.deepToString(requestedData));
 
        // split into Result
+        List<Result> results = new ArrayList<Result>();
+        results.add(new Result(requestedData[0], requestedData[1], requestedData[2]));
 
-//        Result result = new Result(requestedData[0], requestedData[1], requestedData[2]);
-//        System.err.println(requestedData[0] + "NOBO");
-
-        return new Result(requestedData[0], requestedData[1], requestedData[2]);
+        return results;
     }
 }

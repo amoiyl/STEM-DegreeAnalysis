@@ -8,6 +8,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -32,11 +35,11 @@ class ACSServiceTest {
         result.setDegreeEarnedByWomen("10");
         result.setDegreeEarnedByMen("100");
 
-        String expectedResults = "In California, there are 100 STEM degrees earned by men and 10 STEM degrees earned by women.";
+        List<Result> expectedResults = Collections.singletonList(result);
 
         //when
         when(acsService.getResults(query)).thenReturn(expectedResults);
-        String actualResults = acsController.getResults(query);
+        List<Result> actualResults = acsController.getResults(query);
 
         //then
         assertEquals(expectedResults, actualResults);

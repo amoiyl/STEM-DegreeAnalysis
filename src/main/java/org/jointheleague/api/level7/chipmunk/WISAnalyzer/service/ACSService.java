@@ -1,7 +1,10 @@
 package org.jointheleague.api.level7.chipmunk.WISAnalyzer.service;
 
 import org.jointheleague.api.level7.chipmunk.WISAnalyzer.repository.ACSRepository;
+import org.jointheleague.api.level7.chipmunk.WISAnalyzer.repository.dto.Result;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ACSService {
@@ -11,7 +14,7 @@ public class ACSService {
         this.acsRepository = acsRepository;
     }
 
-    public String getResults(String query) {
-        return acsRepository.getResults(query).toString();
+    public List<Result> getResults(String query) {
+        return acsRepository.getResults(query);
     }
 }

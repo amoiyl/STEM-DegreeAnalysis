@@ -45,7 +45,7 @@ class ACSControllerIntTest {
         result.setDegreeEarnedByWomen("10");
         result.setDegreeEarnedByMen("100");
 
-        String expectedResults = "In California, there are 100 STEM degrees earned by men and 10 STEM degrees earned by women.";
+        List<Result> expectedResults = Collections.singletonList(result);
 
         when(acsService.getResults(query)).thenReturn(expectedResults);
 

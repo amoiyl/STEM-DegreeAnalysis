@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.jointheleague.api.level7.chipmunk.WISAnalyzer.service.ACSService;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 public class ACSController {
@@ -23,15 +25,15 @@ public class ACSController {
     @GetMapping("/searchACSResults")
     @ApiOperation(value = "Bachelor's degrees based on demographics\",\n" +
             "            notes = \"Response may include multiple Result values.",
-            notes = "Response may include multiple Result values.",
+            notes = "Response may include 1 Result value.",
             response = Result.class,
-            responseContainer="List")
+            responseContainer="String")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Result(s) found"),
             @ApiResponse(code = 404, message = "Result(s) not found")
     })
 
-    public String getResults(@RequestParam(value="state") String query){
+    public List<Result> getResults(@RequestParam(value="state") String query){
         return acsService.getResults(query);
     }
 
